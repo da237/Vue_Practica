@@ -13,6 +13,7 @@
             <label for="materias">Materias</label>
             <input type="text" v-model="subject" value="materias" placeholder="Diguite Materias">
             <button @click="handleSubject()">Agregar</button>
+            <button @click="change()">{{ isEditing ? Hola : Dos }}Hola</button>
             <div>
                 <ul>
                     <li v-for="item in teacher.subjects" :key="item">{{ item }}</li>
@@ -22,7 +23,7 @@
         <div>
             <label>Documentos</label>
             <input type="checkbox" v-model="teacher.docs">
-            <button @click="handleTeacher()">Agregar</button>
+            <button @click="handleTeacher">{{ isEditing ? 'Actualizar' : 'Agregar' }}</button>
         </div>
     </section>
     <section>
@@ -33,6 +34,7 @@
                 <th>Dni</th>
                 <th>Materias</th>
                 <th>Documentos</th>
+                <th>Acciones</th>
             </tr>
            <tr v-for="elm in teachers" :key="elm.dni">
             <th>{{ elm.ticherName }}</th>
@@ -44,6 +46,8 @@
             </th>
             <th v-if="elm.docs">Entregado</th>
             <th v-else>No entregado</th>
+            <th><button >Editar</button></th>
+            <th><button @click="eliminar(elm)">Eliminar</button></th>
            </tr>
         </table>
     </section>
@@ -62,6 +66,7 @@ let teacher = ref({
 let teachers = ref ([])
 
 let subject  = ref ('');
+let isEditing = ref (false);
 
 const handleSubject = () => {
     if (subject.value.trim()) {
@@ -70,6 +75,9 @@ const handleSubject = () => {
     subject.value = '';
 };
 
+const change = () => {
+    isEditing.value =  !isEditing.value
+}
 const handleTeacher = () => { 
     teachers.value.push({
         ticherName: teacher.value.ticherName,
@@ -81,7 +89,10 @@ const handleTeacher = () => {
     teacher.value.ticherDni = "",
     teacher.value.subjects = []
     teacher.value.docs = false;
+}
 
+const eliminar = (elm) => {
+    teachers.value.splice(elm)
 }
 </script>
 
